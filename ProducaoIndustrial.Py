@@ -76,7 +76,10 @@ def menuOpcoes():
 
     print("=" * 50)
 
-    escolha = int(input("Escolha uma opção: "))
+    try:
+        escolha = int(input("Escolha uma opção: "))
+    except ValueError:
+        raise ValueError("Opção inválida: digite um número")
 
     print("=" * 50)
 
@@ -93,7 +96,12 @@ def inicio():
 
     while True:
 
-        opcao = menuOpcoes()
+        try:
+            opcao = menuOpcoes()
+        except Exception as erro:
+            print("✘ Erro:", erro)
+            print("=" * 50)
+            continue
 
         match opcao:
 
