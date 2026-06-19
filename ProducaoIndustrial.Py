@@ -163,22 +163,26 @@ def inicio():
                 print("\n" + "=" * 50)
                 print("REGISTRAR PRODUÇÃO".center(50))
                 print("=" * 50)
-                codigo = input("\nCódigo do produto: ").strip()
-                if isinstance(codigo, int) == False or not codigo or qtd < 0:
-                    raise ValueError("Codigo inválido")
- 
-                for p in produtos:
-                    if str(p.codigo) == codigo:
-                        qtd = input("Quantidade produzida: ").strip()
-                        if isinstance(qtd, int) == False or not qtd or qtd < 0:
-                            raise ValueError("Valor de Registro inváido")
-                        p.quant += qtd
-                        print("✔ Produção registrada!")
-                        print("=" * 50)
-                        break
-                else:
-                    print("Produto não encontrado.")
-                    print("=" * 50)
+                try:
+                    codigo = input("\nCódigo do produto: ").strip()
+                    if not codigo.isdigit():
+                        raise ValueError("Código inválido")
+
+                    for p in produtos:
+                        if str(p.codigo) == codigo:
+                            qtd = input("Quantidade produzida: ").strip()
+                            if not qtd.isdigit():
+                                raise ValueError("Valor de registro inválido")
+                            p.quant = str(int(p.quant) + int(qtd))
+                            print("✔ Produção registrada!")
+                            break
+                    else:
+                        print("Produto não encontrado.")
+
+                except Exception as erro:
+                    print("✘ Erro:", erro)
+
+                print("=" * 50)
 
             # -------------------------
             # 5 - REGISTRAR SAÍDA
@@ -189,24 +193,28 @@ def inicio():
                 print("REGISTRAR SAÍDA".center(50))
                 print("=" * 50)
 
-                codigo = input("Código do produto: ")
- 
-                codigo = input("Código do produto: ").strip()
-                if isinstance(codigo, int) == False or not codigo or qtd < 0:
-                    raise ValueError("Codigo inválido")
- 
-                for p in produtos:
-                    if str(p.codigo) == codigo:
-                        qtd = input("Quantidade de saída: ").strip()
-                        if isinstance(qtd, int) == False or not qtd or qtd < 0:
-                            raise ValueError("Valor de Registro inváido")
-                        p.quant -= qtd
-                        print("✔ Saída registrada!")
-                        print("=" * 50)
-                        break
-                else:
-                    print("Produto não encontrado.")
-                    print("=" * 50)
+                try:
+                    codigo = input("Código do produto: ").strip()
+                    if not codigo.isdigit():
+                        raise ValueError("Código inválido")
+
+                    for p in produtos:
+                        if str(p.codigo) == codigo:
+                            qtd = input("Quantidade de saída: ").strip()
+                            if not qtd.isdigit():
+                                raise ValueError("Valor de registro inválido")
+                            if int(qtd) > int(p.quant):
+                                raise ValueError("Quantidade de saída maior que o estoque disponível")
+                            p.quant = str(int(p.quant) - int(qtd))
+                            print("✔ Saída registrada!")
+                            break
+                    else:
+                        print("Produto não encontrado.")
+
+                except Exception as erro:
+                    print("✘ Erro:", erro)
+
+                print("=" * 50)
             # -------------------------
             # 6 - CONSULTAR ESTOQUE
             # -------------------------
@@ -223,7 +231,7 @@ def inicio():
                     print("-" * 60)
                     for p in produtos:
                         print(p)
-                        total += p.quant
+                        total += int(p.quant)
 
                 print("-" * 50)
                 print("Total geral:", total)
