@@ -113,6 +113,10 @@ def inicio():
                     print("CADASTRAR PRODUTO".center(50))
                     print("-" * 50)
                     codigo = input("Código: ")
+
+                    if any(str(p.codigo) == str(codigo).strip() for p in produtos):
+                        raise ValueError("Já existe um produto cadastrado com esse código")
+
                     produto = input("Produto: ")
                     setor = input("Setor: ")
                     quant = input("Quantidade: ")
